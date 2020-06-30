@@ -1,29 +1,25 @@
-import React,{createContext,useState} from 'react';
+import React,{createContext,useState,useEffect} from 'react';
 import {BrowserRouter,Route} from "react-router-dom"
-import Header from './components/header'
+import CanvasNest from 'canvas-nest.js'
 import Home from './components/main'
-import './assets/css/App.css';
-
-
-export const context = createContext({})
-export function ContextProvider({children}){ //顶层父级组件
-
-  const [count,setCount] = useState(10)
-  const data = {
-           count,
-           setCount,
-           add:()=>(setCount(count-1))
-   }
-//context对象中提供了一个自带的Provider组件  接受children 子组件
-return <context.Provider value={data}>{children}</context.Provider>
-}
-
-
+import Header from './components/header'
+import './assets/css/App.scss';
 function App() {
+  const config = {
+    color: '252, 248, 248',
+    count: 200,
+  }
+  useEffect(() => {
+    const cn = new CanvasNest(document.getElementById('app'), config)
+    return () => {
+      cn.destroy()
+    }
+  })
   return (
-    <BrowserRouter className="App">
-      <Route  path='/home' component={Home}/>
-    </BrowserRouter>
+    <div className="App" id='app'>
+      <Header />
+      {/* <Route component={}/> */}
+    </div>
   );
 }
 
